@@ -20,8 +20,6 @@ import nu.pattern.OpenCV;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import util.CoordinatesKeeper;
-import util.Helper;
 
 import java.io.*;
 import java.net.URL;
@@ -136,16 +134,11 @@ public class Controller implements Initializable {
     @FXML
     public ImageView imageViewDotConverter;
 
-    private final CoordinatesKeeper coordinatesKeeper = new CoordinatesKeeper();
     private final int border255 = 255;
     private final int border360 = 360;
 
     private Model model;
 
-    /**
-     * 1. Разобраться с размерностями у конвертеров (привести их к одному виду);
-     * 2. Определить лучший размер изображения
-     */
     public Controller() {
         OpenCV.loadLocally();
     }
@@ -154,7 +147,6 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         int widthAndHeight = 500;
         Model.size = new Size(widthAndHeight, widthAndHeight);
-        //loadImagesToProgram();
         box.heightProperty().addListener((observable, oldValue, newValue) -> separator.setEndY(newValue.doubleValue()));
         pane.heightProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.doubleValue() != 0 && oldValue.doubleValue() != 0) {
@@ -208,105 +200,45 @@ public class Controller implements Initializable {
         setDisableSliders(true);
     }
 
-    private void loadImagesToProgram() {
-        coordinatesKeeper.setRGB(Helper.deserializer(new ModelRGB(border255, border255, border255)));
-        coordinatesKeeper.setCMY(Helper.deserializer(new ModelCMY(border255, border255, border255)));
-        coordinatesKeeper.setHSV(Helper.deserializer(new ModelHSV(border360, border255, border255)));
-        coordinatesKeeper.setHLS(Helper.deserializer(new ModelHLS(border360, border255, border255)));
-        coordinatesKeeper.setXYZ(Helper.deserializer(new ModelXYZ(border255, border255, border255)));
-        coordinatesKeeper.setLAB(Helper.deserializer(new ModelLab(border255, border255, border255)));
-        coordinatesKeeper.setYUV(Helper.deserializer(new ModelYUV(border255, border255, border255)));
-    }
-
     @FXML
     public void onActionMenuItemRGB() {
         model = new ModelRGB(border255, border255, border255);
-/*
-        coordinatesKeeper.resetAllModels();
-        if (coordinatesKeeper.getRGB() == null) {
-            coordinatesKeeper.setRGB(Helper.deserializer(new ModelRGB(border255, border255, border255)));
-        }
-
-        model.setSavedCoordinates(coordinatesKeeper.getRGB());
-  */
         initializeModel(model);
     }
 
     @FXML
     public void onActionMenuItemCMY() {
         model = new ModelCMY(border255, border255, border255);
-        /*
-        coordinatesKeeper.resetAllModels();
-        if (coordinatesKeeper.getCMY() == null) {
-            coordinatesKeeper.setCMY(Helper.deserializer(new ModelCMY(border255, border255, border255)));
-        }
-        model.setSavedCoordinates(coordinatesKeeper.getCMY());
-        */
         initializeModel(model);
     }
 
     @FXML
     public void onActionMenuItemHSV() {
         model = new ModelHSV(border360, border255, border255);
-        /*
-        coordinatesKeeper.resetAllModels();
-        if (coordinatesKeeper.getHSV() == null) {
-            coordinatesKeeper.setHSV(Helper.deserializer(new ModelHSV(border360, border255, border255)));
-        }
-        */
-        model.setSavedCoordinates(coordinatesKeeper.getHSV());
         initializeModel(model);
     }
 
     @FXML
     public void onActionMenuItemHSL() {
         model = new ModelHLS(border360, border255, border255);
-        /*
-        coordinatesKeeper.resetAllModels();
-        if (coordinatesKeeper.getHLS() == null) {
-            coordinatesKeeper.setHLS(Helper.deserializer(new ModelHLS(border360, border255, border255)));
-        }
-        */
-        model.setSavedCoordinates(coordinatesKeeper.getHLS());
         initializeModel(model);
     }
 
     @FXML
     public void onActionMenuItemXYZ() {
         model = new ModelXYZ(border255, border255, border255);
-        /*
-        coordinatesKeeper.resetAllModels();
-        if (coordinatesKeeper.getXYZ() == null) {
-            coordinatesKeeper.setXYZ(Helper.deserializer(new ModelXYZ(border255, border255, border255)));
-        }
-        */
-        model.setSavedCoordinates(coordinatesKeeper.getXYZ());
         initializeModel(model);
     }
 
     @FXML
     public void onActionMenuItemLAB() {
         model = new ModelLab(border255, border255, border255);
-        /*
-        coordinatesKeeper.resetAllModels();
-        if (coordinatesKeeper.getLAB() == null) {
-            coordinatesKeeper.setLAB(Helper.deserializer(new ModelLab(border255, border255, border255)));
-        }
-        */
-        model.setSavedCoordinates(coordinatesKeeper.getLAB());
         initializeModel(model);
     }
 
     @FXML
     public void onActionMenuItemYUV() {
         model = new ModelYUV(border255, border255, border255);
-        /*
-        coordinatesKeeper.resetAllModels();
-        if (coordinatesKeeper.getYUV() == null) {
-            coordinatesKeeper.setYUV(Helper.deserializer(new ModelYUV(border255, border255, border255)));
-        }
-        */
-        model.setSavedCoordinates(coordinatesKeeper.getYUV());
         initializeModel(model);
     }
 
@@ -398,7 +330,6 @@ public class Controller implements Initializable {
         thirdValueLabel.setText(String.format("%.0f/%.0f", 0.f, sliderThirdCoordinate.getMax()));
         model.setFirstCoordinate(Math.floor(sliderFirstCoordinate.getValue()));
         sliceProjection.setImage(Converter.mat2Img(model.getFirstProjection()));
-        //sliceProjection.setImage(model.getFirstCoordinateImage());
         firstValueLabel.setText(String.format("%.0f/%.0f", sliderFirstCoordinate.getValue(), sliderFirstCoordinate.getMax()));
         setCoordinatesNames(model.getSecondCoordinateName(), model.getThirdCoordinateName());
         setValuesLabel(model.getFirstCoordinateName(), sliderFirstCoordinate.getValue());
@@ -412,7 +343,6 @@ public class Controller implements Initializable {
         thirdValueLabel.setText(String.format("%.0f/%.0f", 0.f, sliderThirdCoordinate.getMax()));
         model.setSecondCoordinate(Math.floor(sliderSecondCoordinate.getValue()));
         sliceProjection.setImage(Converter.mat2Img(model.getSecondProjection()));
-        //sliceProjection.setImage(model.getSecondCoordinateImage());
         secondValueLabel.setText(String.format("%.0f/%.0f", sliderSecondCoordinate.getValue(), sliderSecondCoordinate.getMax()));
         setCoordinatesNames(model.getFirstCoordinateName(), model.getThirdCoordinateName());
         setValuesLabel(model.getSecondCoordinateName(), sliderSecondCoordinate.getValue());
@@ -426,7 +356,6 @@ public class Controller implements Initializable {
         secondValueLabel.setText(String.format("%.0f/%.0f", 0.f, sliderSecondCoordinate.getMax()));
         model.setThirdCoordinate(Math.floor(sliderThirdCoordinate.getValue()));
         sliceProjection.setImage(Converter.mat2Img(model.getThirdProjection()));
-        //sliceProjection.setImage(model.getThirdCoordinateImage());
         thirdValueLabel.setText(String.format("%.0f/%.0f", sliderThirdCoordinate.getValue(), sliderThirdCoordinate.getMax()));
         setCoordinatesNames(model.getFirstCoordinateName(), model.getSecondCoordinateName());
         setValuesLabel(model.getThirdCoordinateName(), sliderThirdCoordinate.getValue());

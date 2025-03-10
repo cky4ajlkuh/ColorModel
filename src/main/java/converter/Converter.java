@@ -27,33 +27,6 @@ public class Converter {
         OpenCV.loadShared();
     }
 
-    public static Image bytes2Img(byte[] bytes, int width, int height) {
-        WritableImage writableImage = new WritableImage(width, height);
-        PixelWriter pixelWriter = writableImage.getPixelWriter();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int index = (x * 4) + (y * width * 4);
-                Color color = Color.rgb(
-                        (bytes[index] & 0xff),
-                        (bytes[index + 1] & 0xff),
-                        (bytes[index + 2] & 0xff)
-                );
-                pixelWriter.setColor(x, y, color);
-            }
-        }
-        return writableImage;
-    }
-
-    public static byte[] img2Bytes(Image image) {
-        int width = (int) image.getWidth();
-        int height = (int) image.getHeight();
-        byte[] buffer = new byte[width * height * 4];
-        PixelReader reader = image.getPixelReader();
-        WritablePixelFormat<ByteBuffer> format = WritablePixelFormat.getByteBgraInstance();
-        reader.getPixels(0, 0, width, height, format, buffer, 0, width * 4);
-        return buffer;
-    }
-
     public static Image mat2Img(Mat mat) {
         MatOfByte bytes = new MatOfByte();
         Imgcodecs.imencode(".png", mat, bytes);

@@ -1,10 +1,8 @@
 package model;
 
-import converter.Converter;
 import org.opencv.core.Size;
 import util.Help;
 import javafx.scene.image.Image;
-import util.SavedCoordinates;
 
 public abstract class Model implements Help {
 
@@ -22,8 +20,6 @@ public abstract class Model implements Help {
     private final int border2;
     private final int border3;
 
-    private SavedCoordinates savedCoordinates;
-
     public Model(Image model, int border1, int border2, int border3) {
         this.model = model;
         this.border1 = border1;
@@ -33,10 +29,6 @@ public abstract class Model implements Help {
 
     public Image getModel() {
         return model;
-    }
-
-    public void setSavedCoordinates(SavedCoordinates savedCoordinates) {
-        this.savedCoordinates = savedCoordinates;
     }
 
     public abstract String getFirstCoordinateName();
@@ -67,18 +59,6 @@ public abstract class Model implements Help {
 
     public void setThirdCoordinate(double thirdCoordinate) {
         this.thirdCoordinate = thirdCoordinate;
-    }
-
-    public Image getFirstCoordinateImage() {
-        return Converter.mat2Img(savedCoordinates.getFirstCoordinateImages().get((int) getFirstCoordinate()));
-    }
-
-    public Image getSecondCoordinateImage() {
-        return Converter.mat2Img(savedCoordinates.getSecondCoordinateImages().get((int) getSecondCoordinate()));
-    }
-
-    public Image getThirdCoordinateImage() {
-        return Converter.mat2Img(savedCoordinates.getThirdCoordinateImages().get((int) getThirdCoordinate()));
     }
 
     public int getBorder1() {
