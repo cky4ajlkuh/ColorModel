@@ -10,8 +10,8 @@ import java.util.function.BinaryOperator;
 
 public class ModelYUV extends Model {
 
-    public ModelYUV(int border1, int border2, int border3) {
-        super(new Image("model-yuv.png"), border1, border2, border3);
+    public ModelYUV() {
+        super(new Image("model-yuv.png"), Model.BORDER_255, Model.BORDER_255, Model.BORDER_255);
     }
 
     @Override

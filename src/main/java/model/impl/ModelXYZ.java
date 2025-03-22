@@ -10,8 +10,8 @@ import java.util.function.BinaryOperator;
 
 public class ModelXYZ extends Model {
 
-    public ModelXYZ(int border1, int border2, int border3) {
-        super(new Image("model-xyz.png"), border1, border2, border3);
+    public ModelXYZ() {
+        super(new Image("model-xyz.png"), Model.BORDER_255, Model.BORDER_255, Model.BORDER_255);
     }
 
     @Override

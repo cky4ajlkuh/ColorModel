@@ -10,8 +10,8 @@ import java.util.function.BinaryOperator;
 
 public class ModelRGB extends Model {
 
-    public ModelRGB(int border1, int border2, int border3) {
-        super(new Image("model-rgb.png"), border1, border2, border3);
+    public ModelRGB() {
+        super(new Image("model-rgb.png"), Model.BORDER_255, Model.BORDER_255, Model.BORDER_255);
     }
 
     @Override
