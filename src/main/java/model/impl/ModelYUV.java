@@ -60,8 +60,8 @@ public class ModelYUV extends Model {
     }
 
     private Mat fillSliceWith(BinaryOperator<Integer> operator, Mat slice) {
-        for (int i = 0; i < slice.cols(); i++) {
-            for (int j = 0; j < slice.rows(); j++) {
+        for (int i = 0; i < slice.cols() - 1; i++) {
+            for (int j = 1; j < slice.rows(); j++) {
                 operator.apply(i, j);
             }
         }
