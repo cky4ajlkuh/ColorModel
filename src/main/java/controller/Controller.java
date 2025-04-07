@@ -6,11 +6,18 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.image.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,9 +25,11 @@ import model.*;
 import model.impl.*;
 import nu.pattern.OpenCV;
 import org.opencv.core.*;
+import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -133,6 +142,8 @@ public class Controller implements Initializable {
     public ImageView imageViewDot;
     @FXML
     public ImageView imageViewDotConverter;
+    @FXML
+    public MenuItem menuItemHelp;
 
     private Model model;
 
@@ -261,6 +272,7 @@ public class Controller implements Initializable {
             menuItemSaveAsFile.setDisable(false);
         }
         infoAboutModel.setText(model.getInfo());
+        infoAboutModel.setFont(new Font("Monospaced", 14));
         sliceProjection.setImage(null);
         paneModel.setVisible(true);
         imageViewDot.setImage(new Image("default-pixel.png"));
@@ -619,6 +631,19 @@ public class Controller implements Initializable {
                         * sliceProjection.getImage().getHeight()));
                 imageViewDot.setImage(Converter.generatePixelByColor(imageViewDot.getFitWidth(), imageViewDot.getFitHeight(), color));
             });
+        }
+    }
+
+    public void onActionMenuItemHelp() {
+        File pdfFile = new File("src/main/resources/converting-formulas.pdf");
+        if (pdfFile.exists()) {
+            try {
+                Desktop.getDesktop().browse(pdfFile.toURI());
+            } catch (IOException ex) {
+                createModalDialog(ex.getMessage(), 500, 500);
+            }
+        } else {
+            createModalDialog("Файл со справкой не найден!", 200, 100);
         }
     }
 }

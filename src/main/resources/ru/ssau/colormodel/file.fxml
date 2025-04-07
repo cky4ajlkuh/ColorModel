@@ -27,6 +27,9 @@
         <Menu mnemonicParsing="false" text="Конвертер">
             <MenuItem fx:id="menuItemConverter" mnemonicParsing="false" onAction="#onActionMenuItemConverter" text="Конвертировать" />
         </Menu>
+        <Menu mnemonicParsing="false" text="Справка">
+            <MenuItem fx:id="menuItemHelp" mnemonicParsing="false" onAction="#onActionMenuItemHelp" text="Справка" />
+        </Menu>
     </MenuBar>
     <Pane fx:id="pane" VBox.vgrow="ALWAYS">
         <VBox fx:id="paneConverter" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false">
