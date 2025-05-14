@@ -11,8 +11,10 @@ public class ModelLab extends Model {
 
     private final double[] labPixels;
 
-    public ModelLab(int border1, int border2, int border3) {
-        super(new Image("model-lab.png"), border1, border2, border3);
+    public ModelLab() {
+        super(new Image("model-lab.png"),
+                Model.BORDER_100, Model.BORDER_127, Model.BORDER_127,
+                Model.BORDER_0, Model.BORDER_128, Model.BORDER_128);
         labPixels = new double[3];
     }
 
@@ -42,7 +44,7 @@ public class ModelLab extends Model {
                 double X = x - R;
                 double Y = y - R;
                 double r = Math.sqrt(X * X + Y * Y);
-                double coordinate = getFirstCoordinate();
+                double coordinate = getFirstCoordinate() / Model.BORDER_100 * Model.BORDER_255;
                 if (coordinate <= HALF_VAL && r <= coordinate / MAX_VAL * 2 * R ||
                         coordinate > HALF_VAL && r <= 2 * R - coordinate / MAX_VAL * 2 * R) {
                     labPixels[0] = coordinate;
@@ -67,7 +69,7 @@ public class ModelLab extends Model {
                 double X = x - R;
                 double Y = y - R;
                 double r = Math.sqrt(X * X + Y * Y);
-                double coordinate = getSecondCoordinate();
+                double coordinate = getSecondCoordinate() + (-1) * Model.BORDER_128;
                 if (coordinate <= HALF_VAL && r <= coordinate / MAX_VAL * 2 * R ||
                         coordinate > HALF_VAL && r <= 2 * R - coordinate / MAX_VAL * 2 * R) {
                     labPixels[0] = MAX_VAL - (double) x / slice.cols() * MAX_VAL;
@@ -92,7 +94,7 @@ public class ModelLab extends Model {
                 double X = x - R;
                 double Y = y - R;
                 double r = Math.sqrt(X * X + Y * Y);
-                double coordinate = getThirdCoordinate();
+                double coordinate = getThirdCoordinate() + (-1) * Model.BORDER_128;
                 if (coordinate <= HALF_VAL && r <= coordinate / MAX_VAL * 2 * R ||
                         coordinate > HALF_VAL && r <= 2 * R - coordinate / MAX_VAL * 2 * R) {
                     labPixels[0] = MAX_VAL - (double) x / slice.cols() * MAX_VAL;

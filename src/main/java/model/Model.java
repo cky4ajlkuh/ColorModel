@@ -1,42 +1,60 @@
 package model;
 
-import converter.Converter;
 import org.opencv.core.Size;
 import util.Help;
 import javafx.scene.image.Image;
-import util.SavedCoordinates;
 
 public abstract class Model implements Help {
+
+    public static Size size;
+    public static final int BORDER_0 = 0;
 
     protected static final double MAX_VAL = 255;
     protected static final double HALF_FI = 180;
     protected static final double HALF_VAL = 127;
     protected static final long HALF_HALF_FI = 90;
-    public static Size size;
+
+    protected static final int BORDER_255 = 255;
+    protected static final int BORDER_360 = 360;
+    protected static final int BORDER_100 = 100;
+    protected static final int BORDER_128 = -128;
+    protected static final int BORDER_127 = 127;
 
     private final Image model;
+
     private double firstCoordinate;
     private double secondCoordinate;
     private double thirdCoordinate;
-    private final int border1;
-    private final int border2;
-    private final int border3;
 
-    private SavedCoordinates savedCoordinates;
+    private final int borderMax1;
+    private final int borderMax2;
+    private final int borderMax3;
+    private int borderMin1 = 0;
+    private int borderMin2 = 0;
+    private int borderMin3 = 0;
 
-    public Model(Image model, int border1, int border2, int border3) {
+    public Model(Image model, int borderMax1, int borderMax2, int borderMax3) {
         this.model = model;
-        this.border1 = border1;
-        this.border2 = border2;
-        this.border3 = border3;
+        this.borderMax1 = borderMax1;
+        this.borderMax2 = borderMax2;
+        this.borderMax3 = borderMax3;
     }
+
+    public Model(Image model,
+                 int borderMax1, int borderMax2, int borderMax3,
+                 int borderMin1, int borderMin2, int borderMin3) {
+        this.model = model;
+        this.borderMax1 = borderMax1;
+        this.borderMax2 = borderMax2;
+        this.borderMax3 = borderMax3;
+        this.borderMin1 = borderMin1;
+        this.borderMin2 = borderMin2;
+        this.borderMin3 = borderMin3;
+    }
+
 
     public Image getModel() {
         return model;
-    }
-
-    public void setSavedCoordinates(SavedCoordinates savedCoordinates) {
-        this.savedCoordinates = savedCoordinates;
     }
 
     public abstract String getFirstCoordinateName();
@@ -69,28 +87,28 @@ public abstract class Model implements Help {
         this.thirdCoordinate = thirdCoordinate;
     }
 
-    public Image getFirstCoordinateImage() {
-        return Converter.mat2Img(savedCoordinates.getFirstCoordinateImages().get((int) getFirstCoordinate()));
+    public int getBorderMax1() {
+        return borderMax1;
     }
 
-    public Image getSecondCoordinateImage() {
-        return Converter.mat2Img(savedCoordinates.getSecondCoordinateImages().get((int) getSecondCoordinate()));
+    public int getBorderMax2() {
+        return borderMax2;
     }
 
-    public Image getThirdCoordinateImage() {
-        return Converter.mat2Img(savedCoordinates.getThirdCoordinateImages().get((int) getThirdCoordinate()));
+    public int getBorderMax3() {
+        return borderMax3;
     }
 
-    public int getBorder1() {
-        return border1;
+    public int getBorderMin1() {
+        return borderMin1;
     }
 
-    public int getBorder2() {
-        return border2;
+    public int getBorderMin2() {
+        return borderMin2;
     }
 
-    public int getBorder3() {
-        return border3;
+    public int getBorderMin3() {
+        return borderMin3;
     }
 
     @Override

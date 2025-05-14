@@ -10,8 +10,8 @@ import java.util.function.BinaryOperator;
 
 public class ModelYUV extends Model {
 
-    public ModelYUV(int border1, int border2, int border3) {
-        super(new Image("model-yuv.png"), border1, border2, border3);
+    public ModelYUV() {
+        super(new Image("model-yuv.png"), Model.BORDER_255, Model.BORDER_255, Model.BORDER_255);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class ModelYUV extends Model {
     }
 
     private Mat fillSliceWith(BinaryOperator<Integer> operator, Mat slice) {
-        for (int i = 0; i < slice.cols(); i++) {
-            for (int j = 0; j < slice.rows(); j++) {
+        for (int i = 0; i < slice.cols() - 1; i++) {
+            for (int j = 1; j < slice.rows(); j++) {
                 operator.apply(i, j);
             }
         }
@@ -72,9 +72,11 @@ public class ModelYUV extends Model {
 
     @Override
     public String getInfo() {
-        return "Цветовая модель YUV - это система представления цвета, состоящая из трех компонентов:\n" +
-                "Y - яркость (Luma);\n" +
-                "U и V - цветоразностные компоненты (Chroma).\n" +
+        return "Цветовая модель YUV - это цветовая модель, которая разделяет изображение на яркостную (Y)\n" +
+                "и цветные (UV) составляющие:\n" +
+                "Y - содержит информацию о яркости каждого пикселя (0 - 255);\n" +
+                "U - показывает разницу между красным и яркостью (0 - 255);\n" +
+                "V - показывает разницу между синим и яркостью (0 - 255);\n" +
                 "YUV используется во всех системах передачи и трансляции видео, позволяя снизить объем передаваемых\n" +
                 "данных, т.к. цветоразностные компоненты можно кодировать с меньшей точность.";
     }

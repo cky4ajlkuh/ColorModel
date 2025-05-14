@@ -9,8 +9,9 @@ public class ModelHLS extends Model {
     private final double[] hlsPixel;
     private final int[][] mask;
 
-    public ModelHLS(int border1, int border2, int border3) {
-        super(new Image("model-hsl.png"), border1, border2, border3);
+    public ModelHLS() {
+        super(new Image("model-hsl.png"),
+                Model.BORDER_360, Model.BORDER_100, Model.BORDER_100);
         hlsPixel = new double[3];
         mask = getMask();
     }
@@ -70,8 +71,8 @@ public class ModelHLS extends Model {
     public Mat getSecondProjection() {
         Mat slice = new Mat(size, CvType.CV_8UC3);
         Imgproc.cvtColor(slice, slice, Imgproc.COLOR_BGR2HLS);
-        int cols = (int) (slice.cols() * getSecondCoordinate() / MAX_VAL);
-        int border = (int) (getSecondCoordinate() / MAX_VAL * slice.rows() / 2);
+        int cols = (int) (slice.cols() * getSecondCoordinate() / Model.BORDER_100);
+        int border = (int) (getSecondCoordinate() / Model.BORDER_100 * slice.rows() / 2);
         int end = slice.rows() - border;
         if (slice.rows() / 2 - border == 0) {
             end = border + 1;
@@ -80,8 +81,10 @@ public class ModelHLS extends Model {
         for (int y = border; y < end; y++) {
             for (int x = 0; x < cols; x++) {
                 if (mask[y][slice.cols() / 2 - cols / 2 + x] == 1) {
-                    slice.put(y, slice.cols() / 2 - cols / 2 + x, (double) x / cols * HALF_FI,
-                            MAX_VAL - (double) y / slice.rows() * MAX_VAL, getSecondCoordinate());
+                    slice.put(y, slice.cols() / 2 - cols / 2 + x,
+                            (double) x / cols * HALF_FI,
+                            MAX_VAL - (double) y / slice.rows() * MAX_VAL,
+                            getSecondCoordinate() / Model.BORDER_100 * Model.BORDER_255);
                 }
             }
         }
@@ -125,7 +128,7 @@ public class ModelHLS extends Model {
                 double Y = y - R;
                 double r = Math.sqrt(X * X + Y * Y);
                 long angle = Math.round(Math.atan2(Y, X) * HALF_FI / Math.PI) / 2 + HALF_HALF_FI;
-                double coordinate = getThirdCoordinate();
+                double coordinate = getThirdCoordinate() / Model.BORDER_100 * Model.BORDER_255;
                 if (coordinate <= HALF_VAL && r <= coordinate / MAX_VAL * 2 * R ||
                         coordinate > HALF_VAL && r <= 2 * R - coordinate / MAX_VAL * 2 * R) {
                     hlsPixel[0] = angle;

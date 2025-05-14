@@ -10,8 +10,8 @@ import org.opencv.imgproc.Imgproc;
 public class ModelHSV extends Model {
     private final double[] hsvPixel;
 
-    public ModelHSV(int border1, int border2, int border3) {
-        super(new Image("model-hsv.png"), border1, border2, border3);
+    public ModelHSV() {
+        super(new Image("model-hsv.png"), Model.BORDER_360, Model.BORDER_100, Model.BORDER_100);
         hsvPixel = new double[3];
     }
 
@@ -56,12 +56,14 @@ public class ModelHSV extends Model {
     public Mat getSecondProjection() {
         Mat slice = new Mat(size, CvType.CV_8UC3);
         Imgproc.cvtColor(slice, slice, Imgproc.COLOR_BGR2HSV);
-        int cols = (int) (slice.cols() * getSecondCoordinate() / MAX_VAL);
+        int cols = (int) (slice.cols() * getSecondCoordinate() / Model.BORDER_100);
         slice.setTo(new Scalar(0, 0, 0));
         for (int y = 0; y < slice.rows(); y++) {
             for (int x = 0; x < cols; x++) {
-                slice.put(y, slice.cols() / 2 - cols / 2 + x, (double) x / cols * HALF_FI,
-                        getSecondCoordinate(), MAX_VAL - (double) y / slice.rows() * MAX_VAL);
+                slice.put(y, slice.cols() / 2 - cols / 2 + x,
+                        (double) x / cols * HALF_FI,
+                        getSecondCoordinate() / Model.BORDER_100 * Model.BORDER_255,
+                        MAX_VAL - (double) y / slice.rows() * MAX_VAL);
             }
         }
         Imgproc.cvtColor(slice, slice, Imgproc.COLOR_HSV2BGR);
@@ -83,7 +85,7 @@ public class ModelHSV extends Model {
                 if (r <= R) {
                     hsvPixel[0] = angle;
                     hsvPixel[1] = r / R * MAX_VAL;
-                    hsvPixel[2] = getThirdCoordinate();
+                    hsvPixel[2] = getThirdCoordinate() / Model.BORDER_100 * Model.BORDER_255;
                     slice.put(x, y, hsvPixel);
                 }
             }
@@ -94,7 +96,7 @@ public class ModelHSV extends Model {
 
     @Override
     public String getInfo() {
-        return "Цветовая модель HSB - это система описания цвета, основанная на трех компонентах:\n" +
+        return "Цветовая модель HSB - это перцепционная модель описания цвета, основанная на трех компонентах:\n" +
                 "Hue - это оттенок цвета (0 - 360°);\n" +
                 "Saturation - это степень насыщенности цвета (0 - 100%);\n" +
                 "Brightness - это интенсивность света (0 - 100%).\n" +

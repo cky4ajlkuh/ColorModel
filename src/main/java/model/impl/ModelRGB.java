@@ -10,8 +10,8 @@ import java.util.function.BinaryOperator;
 
 public class ModelRGB extends Model {
 
-    public ModelRGB(int border1, int border2, int border3) {
-        super(new Image("model-rgb.png"), border1, border2, border3);
+    public ModelRGB() {
+        super(new Image("model-rgb.png"), Model.BORDER_255, Model.BORDER_255, Model.BORDER_255);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class ModelRGB extends Model {
     }
 
     private Mat fillSliceWith(BinaryOperator<Integer> operator, Mat slice) {
-        for (int i = 0; i < slice.cols(); i++) {
-            for (int j = 0; j < slice.rows(); j++) {
+        for (int i = 0; i < slice.cols() - 1; i++) {
+            for (int j = 1; j < slice.rows(); j++) {
                 operator.apply(i, j);
             }
         }

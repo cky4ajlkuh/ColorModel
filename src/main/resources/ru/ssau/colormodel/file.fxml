@@ -27,6 +27,9 @@
         <Menu mnemonicParsing="false" text="Конвертер">
             <MenuItem fx:id="menuItemConverter" mnemonicParsing="false" onAction="#onActionMenuItemConverter" text="Конвертировать" />
         </Menu>
+        <Menu mnemonicParsing="false" text="Справка">
+            <MenuItem fx:id="menuItemHelp" mnemonicParsing="false" onAction="#onActionMenuItemHelp" text="Справка" />
+        </Menu>
     </MenuBar>
     <Pane fx:id="pane" VBox.vgrow="ALWAYS">
         <VBox fx:id="paneConverter" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false">
@@ -70,7 +73,7 @@
                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
                         <Label fx:id="labelYUV" maxWidth="1.7976931348623157E308" text="UVI" />
-                        <TextField fx:id="textFieldYUV" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="textFieldYUV" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" promptText="v; v; v" />
                   <padding>
                      <Insets left="5.0" right="10.0" />
                   </padding>
@@ -78,44 +81,42 @@
                      <Insets top="3.0" />
                   </VBox.margin>
                     </HBox>
-                    <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                          minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
-                        <Label maxWidth="1.7976931348623157E308"/>
-                        <TextField editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                   prefWidth="100.0" visible="false"/>
+                    <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
+                        <Label maxWidth="1.7976931348623157E308" />
+                        <TextField editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" visible="false" />
                     </HBox>
                 </VBox>
                 <Separator maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="82.0" prefWidth="1.0" />
                 <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 10; -fx-spacing: 10;" VBox.vgrow="ALWAYS">
                     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
                         <Label fx:id="labelRGB" maxWidth="1.7976931348623157E308" text="RGB" />
-                        <TextField fx:id="textFieldRGB" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="textFieldRGB" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" promptText="v; v; v" />
                     </HBox>
                     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
                         <Label fx:id="labelCMYK" maxWidth="1.7976931348623157E308" text="CMY" />
-                        <TextField fx:id="textFieldCMYK" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="textFieldCMYK" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" promptText="\%; %; %; %" />
                     </HBox>
                 </VBox>
                 <Separator maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="82.0" prefWidth="1.0" />
                 <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 10; -fx-spacing: 10;" VBox.vgrow="ALWAYS">
                     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
                         <Label fx:id="labelHSL" maxWidth="1.7976931348623157E308" text="HSL" />
-                        <TextField fx:id="textFieldHSL" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="textFieldHSL" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" promptText="°; %; %" />
                     </HBox>
                     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
                         <Label fx:id="labelHSV" maxWidth="1.7976931348623157E308" text="HSV" />
-                        <TextField fx:id="textFieldHSV" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="textFieldHSV" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" promptText="°; %; %" />
                     </HBox>
                 </VBox>
                 <Separator maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="82.0" prefWidth="1.0" />
                 <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 10; -fx-spacing: 10;" VBox.vgrow="ALWAYS">
                     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
                         <Label fx:id="labelLAB" maxWidth="1.7976931348623157E308" text="LAB" />
-                        <TextField fx:id="textFieldLAB" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="textFieldLAB" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" promptText="\%; v; v" />
                     </HBox>
                     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 10;" VBox.vgrow="ALWAYS">
                         <Label fx:id="labelXYZ" maxWidth="1.7976931348623157E308" text="XYZ" />
-                        <TextField fx:id="textFieldXYZ" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="textFieldXYZ" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0" promptText="v; v; v" />
                     </HBox>
                 </VBox>
                 <Separator maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="82.0" prefWidth="1.0" />
