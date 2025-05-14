@@ -1,6 +1,8 @@
 package controller;
 
 import converter.Converter;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -21,6 +23,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.*;
 import model.impl.*;
 import nu.pattern.OpenCV;
@@ -150,13 +153,14 @@ public class Controller implements Initializable {
     private static final int DEFAULT_IMAGE_SIZE = 300;
     private static final int DEFAULT_MOUSE_IMAGE_SIZE = 200;
 
+    private int widthAndHeight = 300;
+
     public Controller() {
         OpenCV.loadLocally();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        int widthAndHeight = 500;
         Model.size = new Size(widthAndHeight, widthAndHeight);
         box.heightProperty().addListener((observable, oldValue, newValue) -> separator.setEndY(newValue.doubleValue()));
         pane.heightProperty().addListener((observable, oldValue, newValue) -> {
@@ -338,7 +342,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void onMouseReleasedSliderFirstCoordinate() {
+    public void onMouseAndKeyEventSliderFirstCoordinate() {
         sliderSecondCoordinate.setValue(Model.BORDER_0);
         secondValueLabel.setText(String.format("%.0f/%.0f", 0.f, sliderSecondCoordinate.getMax()));
         sliderThirdCoordinate.setValue(Model.BORDER_0);
@@ -351,7 +355,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void onMouseReleasedSliderSecondCoordinate() {
+    public void onMouseAndKeyEventSliderSecondCoordinate() {
         sliderFirstCoordinate.setValue(Model.BORDER_0);
         firstValueLabel.setText(String.format("%.0f/%.0f", 0.f, sliderFirstCoordinate.getMax()));
         sliderThirdCoordinate.setValue(Model.BORDER_0);
@@ -364,7 +368,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void onMouseReleasedSliderThirdCoordinate() {
+    public void onMouseAndKeyEventSliderThirdCoordinate() {
         sliderFirstCoordinate.setValue(Model.BORDER_0);
         firstValueLabel.setText(String.format("%.0f/%.0f", 0.f, sliderFirstCoordinate.getMax()));
         sliderSecondCoordinate.setValue(Model.BORDER_0);
@@ -645,5 +649,44 @@ public class Controller implements Initializable {
         } else {
             createModalDialog("Файл со справкой не найден!", 200, 100);
         }
+    }
+
+    public void updateImage(String coordinateName) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis(100),
+                        e -> {
+                            widthAndHeight = 900;
+                            Mat updateSlice = new Mat();
+                            if (!coordinateName.isEmpty()) {
+                                Model.size = new Size(widthAndHeight, widthAndHeight);
+                                if (coordinateName.equals(model.getFirstCoordinateName())) {
+                                    updateSlice = model.getFirstProjection();
+                                } else if (coordinateName.equals(model.getSecondCoordinateName())) {
+                                    updateSlice = model.getSecondProjection();
+                                } else if (coordinateName.equals(model.getThirdCoordinateName())) {
+                                    updateSlice = model.getThirdProjection();
+                                }
+                                sliceProjection.setImage(Converter.mat2Img(updateSlice));
+                                widthAndHeight = 300;
+                                Model.size = new Size(widthAndHeight, widthAndHeight);
+                            }
+                        }
+                )
+        );
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+
+    public void onMouseAndKeyReleasedSliderFirstCoordinate() {
+        updateImage(model.getFirstCoordinateName());
+    }
+
+    public void onMouseAndKeyReleasedSliderSecondCoordinate() {
+        updateImage(model.getSecondCoordinateName());
+    }
+
+    public void onMouseAndKeyReleasedSliderThirdCoordinate() {
+        updateImage(model.getThirdCoordinateName());
     }
 }

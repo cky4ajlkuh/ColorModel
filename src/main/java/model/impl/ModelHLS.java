@@ -7,13 +7,11 @@ import org.opencv.imgproc.Imgproc;
 
 public class ModelHLS extends Model {
     private final double[] hlsPixel;
-    private final int[][] mask;
 
     public ModelHLS() {
         super(new Image("model-hsl.png"),
                 Model.BORDER_360, Model.BORDER_100, Model.BORDER_100);
         hlsPixel = new double[3];
-        mask = getMask();
     }
 
     @Override
@@ -69,6 +67,7 @@ public class ModelHLS extends Model {
 
     @Override
     public Mat getSecondProjection() {
+        int[][] mask = getMask();
         Mat slice = new Mat(size, CvType.CV_8UC3);
         Imgproc.cvtColor(slice, slice, Imgproc.COLOR_BGR2HLS);
         int cols = (int) (slice.cols() * getSecondCoordinate() / Model.BORDER_100);
