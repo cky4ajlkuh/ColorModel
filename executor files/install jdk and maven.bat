@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 mkdir "C:\ColorModel"
 
-xcopy "%~dp0\JDK-archive\jdk-17.0.0.1" "C:\ColorModel\jdk-17.0.0.1\" /s /i /y
+xcopy "%~dp0\jdk-17.0.0.1" "C:\ColorModel\jdk-17.0.0.1\" /s /i /y
 
 xcopy "%~dp0\apache-maven-3.9.9" "C:\ColorModel\apache-maven-3.9.9\" /s /i /y
 
