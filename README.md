@@ -26,3 +26,12 @@
 1. выгрузить данный проект;
 2. открыть его с помощью среды разработки;
 3. запустить файл ```ru.ssau.colormodel.StartApplication```.
+
+Стартовая страница:
+![изображение](https://github.com/user-attachments/assets/93394186-269f-4edf-9464-fd1392309613)
+
+Интерфейс по работе с цветовыми моделями:
+![изображение](https://github.com/user-attachments/assets/623640f7-7d41-4826-aff2-b302f8249ee4)
+
+Интерфейс конвертер:
+![изображение](https://github.com/user-attachments/assets/4c377db9-1f3c-4b35-869a-b7ce528c8e80)
