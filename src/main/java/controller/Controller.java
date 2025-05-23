@@ -1,8 +1,6 @@
 package controller;
 
 import converter.Converter;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -23,7 +21,6 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import model.*;
 import model.impl.*;
 import nu.pattern.OpenCV;
@@ -38,8 +35,9 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ResourceBundle;
 
-import static org.opencv.imgproc.Imgproc.resize;
-
+/**
+ * Класс контроллер, осуществляющий основную обработку
+ */
 public class Controller implements Initializable {
     @FXML
     public HBox paneModel;
@@ -282,6 +280,11 @@ public class Controller implements Initializable {
         imageViewDot.setImage(new Image("default-pixel.png"));
     }
 
+    /**
+     * Метод, который инициализирует поля рабочей панели значениями из модели на и/ф "Цветовая модель"
+     *
+     * @param model выбранная цветовая модель
+     */
     private void initializeSliders(Model model) {
         firstCoordinate.setText(model.getFirstCoordinateName());
         secondCoordinate.setText(model.getSecondCoordinateName());
@@ -299,11 +302,17 @@ public class Controller implements Initializable {
         setDisableSliders(false);
     }
 
+    /**
+     * Метод, который отрабатывает при открытии и/ф "Конвертер"
+     */
     @FXML
     public void onActionMenuItemConverter() {
         initializeConverter();
     }
 
+    /**
+     * Метод, который скрывает и раскрывает панели в зависимости от того, какая сейчас выбрана
+     */
     private void initializeConverter() {
         if (paneModel.isVisible()) {
             paneModel.setVisible(false);
@@ -325,6 +334,9 @@ public class Controller implements Initializable {
         textFieldYUV.setText("");
     }
 
+    /**
+     * Метод, который сбрасывает текущие параметры панелей
+     */
     private void reset() {
         sliderFirstCoordinate.setValue(0);
         sliderSecondCoordinate.setValue(0);
@@ -337,10 +349,19 @@ public class Controller implements Initializable {
         dropLabelValues();
     }
 
+    /**
+     * Метод, задающий текущее значение координаты под сечением
+     *
+     * @param name  название координаты
+     * @param value значение координаты
+     */
     private void setValuesLabel(String name, double value) {
         valuesLabel.setText(String.format("%s = %.0f", name, value));
     }
 
+    /**
+     * Метод, который строит сечение по 1 координате цветовой модели
+     */
     @FXML
     public void onMouseAndKeyEventSliderFirstCoordinate() {
         sliderSecondCoordinate.setValue(Model.BORDER_0);
@@ -354,6 +375,9 @@ public class Controller implements Initializable {
         setValuesLabel(model.getFirstCoordinateName(), sliderFirstCoordinate.getValue());
     }
 
+    /**
+     * Метод, который строит сечение по 2 координате цветовой модели
+     */
     @FXML
     public void onMouseAndKeyEventSliderSecondCoordinate() {
         sliderFirstCoordinate.setValue(Model.BORDER_0);
@@ -367,6 +391,9 @@ public class Controller implements Initializable {
         setValuesLabel(model.getSecondCoordinateName(), sliderSecondCoordinate.getValue());
     }
 
+    /**
+     * Метод, который строит сечение по 3 координате цветовой модели
+     */
     @FXML
     public void onMouseAndKeyEventSliderThirdCoordinate() {
         sliderFirstCoordinate.setValue(Model.BORDER_0);
@@ -380,12 +407,12 @@ public class Controller implements Initializable {
         setValuesLabel(model.getThirdCoordinateName(), sliderThirdCoordinate.getValue());
     }
 
+    /**
+     * Метод, который отрабатывает при сохранении файла
+     */
     @FXML
     public void onActionMenuItemSaveAsFile() {
         if (sliceProjection.getImage() != null && paneModel.isVisible()) {
-            Mat resizeMat = new Mat();
-            Size size = new Size(1000, 1000);
-            resize(Converter.img2Mat(sliceProjection.getImage()), resizeMat, size, 0, 0, Imgproc.INTER_CUBIC);
             saveAsFile(sliceProjection.getImage());
         } else {
             createModalDialog("Сечение цветовой модели не выбрано", 250, 110);
@@ -417,18 +444,29 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Метод, который определяет возможность работы со слайдерами
+     *
+     * @param isDisable флаг доступности
+     */
     private void setDisableSliders(boolean isDisable) {
         sliderFirstCoordinate.setDisable(isDisable);
         sliderSecondCoordinate.setDisable(isDisable);
         sliderThirdCoordinate.setDisable(isDisable);
     }
 
+    /**
+     * Метод, который делает видимыми все слайдеры
+     */
     private void setVisibleSliders() {
         sliderFirstCoordinate.setVisible(true);
         sliderSecondCoordinate.setVisible(true);
         sliderThirdCoordinate.setVisible(true);
     }
 
+    /**
+     * Метод, который загружает изображение на и/ф "Конвертер"
+     */
     @FXML
     public void onActionButtonLoad() {
         FileChooser fileChooser = new FileChooser();
@@ -446,6 +484,9 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Метод, который сбрасывает значения всех полей со значениями пикселя на и/ф "Конвертер"
+     */
     @FXML
     public void onActionClearTextFieldButton() {
         textFieldRGB.clear();
@@ -457,6 +498,9 @@ public class Controller implements Initializable {
         textFieldXYZ.clear();
     }
 
+    /**
+     * Метод, который получает и отображает значения пикселя в 7 цветовых моделях на и/ф "Конвертер"
+     */
     @FXML
     public void onMouseClickedGetPixels() {
         convertingImageView.setOnMouseClicked(event -> {
@@ -484,6 +528,9 @@ public class Controller implements Initializable {
         });
     }
 
+    /**
+     * Метод, который строит изображение в лупе и значение текущего положения курсора на изображении на и/ф "Конвертер"
+     */
     @FXML
     public void onMouseMovedConvertingImageView() {
         convertingImageView.setOnMouseMoved(event -> {
@@ -492,6 +539,11 @@ public class Controller implements Initializable {
         });
     }
 
+    /**
+     * Метод, который проставляет текущее положение курсора на изображении на и/ф "Конвертер"
+     *
+     * @param event событие
+     */
     public void onMouseMovedConvertingImageViewMouseCoordinates(MouseEvent event) {
         if (convertingImageView.getImage() != null) {
             labelCoordinatesXY.setText(String.format("X: %d; Y: %d",
@@ -502,19 +554,34 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Метод, который строит изображение для лупы на и/ф "Конвертер"
+     *
+     * @param event событие
+     */
     public void onMouseMovedConvertingImageViewZoom(MouseEvent event) {
         if (convertingImageView.getImage() != null) {
-            int width = 300;
-            int height = 300;
-            int part = 150;
+            int width = (int) (convertingImageView.getImage().getWidth() / 4);
+            int height = (int) (convertingImageView.getImage().getHeight() / 4);
+            int partX = width / 2;
+            int partY = height / 2;
             Mat mat = new Mat(height, width, CvType.CV_8UC4);
-            mat.put(0, 0, getBuffer(event, width, height, part));
-            Imgproc.line(mat, new Point(part - 5, part), new Point(part + 5, part), new Scalar(0, 0, 255));
-            Imgproc.line(mat, new Point(part, part - 5), new Point(part, part + 5), new Scalar(0, 0, 255));
+            mat.put(0, 0, getBuffer(event, width, height, partX));
+            Imgproc.line(mat, new Point(partX - 5, partY), new Point(partX + 5, partY), new Scalar(0, 0, 255));
+            Imgproc.line(mat, new Point(partX, partY - 5), new Point(partX, partY + 5), new Scalar(0, 0, 255));
             mouseView.setImage(Converter.mat2Img(mat));
         }
     }
 
+    /**
+     * Метод, который возвращает изображение в формате массива байт
+     *
+     * @param event  событие
+     * @param width  ширина изображения
+     * @param height высота изображения
+     * @param part   половина размера изображения
+     * @return изображение в виде массива байт
+     */
     private byte[] getBuffer(MouseEvent event, int width, int height, int part) {
         PixelReader reader = convertingImageView.getImage().getPixelReader();
         byte[] buffer = new byte[width * height * 4];
@@ -529,6 +596,9 @@ public class Controller implements Initializable {
         return buffer;
     }
 
+    /**
+     * Метод, который сбрасывает значения полей label справа от ползунков
+     */
     private void dropLabelValues() {
         firstValueLabel.setText("");
         secondValueLabel.setText("");
@@ -626,6 +696,9 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Метод, который отображает пиксель выбранный
+     */
     @FXML
     public void onMouseMovedSliceProjection() {
         if (sliceProjection != null && sliceProjection.getImage() != null) {
@@ -638,6 +711,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Метод, который открывает справку с формулами по нажатию на menuItem "Справка"
+     */
+    @FXML
     public void onActionMenuItemHelp() {
         File pdfFile = new File("src/main/resources/converting-formulas.pdf");
         if (pdfFile.exists()) {
@@ -651,41 +728,49 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Метод, который перерисовывает текущее изображение в большем разрешении.
+     *
+     * @param coordinateName название координаты, по которой происходит перерисовка
+     */
     public void updateImage(String coordinateName) {
-        Timeline timeline = new Timeline(
-                new KeyFrame(
-                        Duration.millis(100),
-                        e -> {
-                            widthAndHeight = 900;
-                            Mat updateSlice = new Mat();
-                            if (!coordinateName.isEmpty()) {
-                                Model.size = new Size(widthAndHeight, widthAndHeight);
-                                if (coordinateName.equals(model.getFirstCoordinateName())) {
-                                    updateSlice = model.getFirstProjection();
-                                } else if (coordinateName.equals(model.getSecondCoordinateName())) {
-                                    updateSlice = model.getSecondProjection();
-                                } else if (coordinateName.equals(model.getThirdCoordinateName())) {
-                                    updateSlice = model.getThirdProjection();
-                                }
-                                sliceProjection.setImage(Converter.mat2Img(updateSlice));
-                                widthAndHeight = 300;
-                                Model.size = new Size(widthAndHeight, widthAndHeight);
-                            }
-                        }
-                )
-        );
-        timeline.setCycleCount(1);
-        timeline.play();
+        widthAndHeight = 900;
+        Mat updateSlice = new Mat();
+        if (!coordinateName.isEmpty()) {
+            Model.size = new Size(widthAndHeight, widthAndHeight);
+            if (coordinateName.equals(model.getFirstCoordinateName())) {
+                updateSlice = model.getFirstProjection();
+            } else if (coordinateName.equals(model.getSecondCoordinateName())) {
+                updateSlice = model.getSecondProjection();
+            } else if (coordinateName.equals(model.getThirdCoordinateName())) {
+                updateSlice = model.getThirdProjection();
+            }
+            sliceProjection.setImage(Converter.mat2Img(updateSlice));
+            widthAndHeight = 300;
+            Model.size = new Size(widthAndHeight, widthAndHeight);
+        }
     }
 
+    /**
+     * Метод, который срабатывает когда пользователь отпускает/перестает перемещать слайдер первой координаты
+     */
+    @FXML
     public void onMouseAndKeyReleasedSliderFirstCoordinate() {
         updateImage(model.getFirstCoordinateName());
     }
 
+    /**
+     * Метод, который срабатывает когда пользователь отпускает/перестает перемещать слайдер второй координаты
+     */
+    @FXML
     public void onMouseAndKeyReleasedSliderSecondCoordinate() {
         updateImage(model.getSecondCoordinateName());
     }
 
+    /**
+     * Метод, который срабатывает когда пользователь отпускает/перестает перемещать слайдер третьей координаты
+     */
+    @FXML
     public void onMouseAndKeyReleasedSliderThirdCoordinate() {
         updateImage(model.getThirdCoordinateName());
     }

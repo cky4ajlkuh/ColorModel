@@ -4,6 +4,9 @@ import org.opencv.core.Size;
 import util.Help;
 import javafx.scene.image.Image;
 
+/**
+ * Абстрактный класс, представляющий собой цветовую модель
+ */
 public abstract class Model implements Help {
 
     public static Size size;
